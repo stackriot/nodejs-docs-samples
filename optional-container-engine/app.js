@@ -15,8 +15,8 @@
 
 // Activate Google Cloud Trace and Debug when in production
 if (process.env.NODE_ENV === 'production') {
-  require('@google-cloud/trace-agent').start();
-  require('@google-cloud/debug-agent').start();
+    require('@google-cloud/trace-agent').start();
+    require('@google-cloud/debug-agent').start();
 }
 
 const path = require('path');
@@ -40,18 +40,18 @@ app.use(logging.requestLogger);
 
 // Configure the session and session storage.
 const sessionConfig = {
-  resave: false,
-  saveUninitialized: false,
-  secret: config.get('SECRET'),
-  signed: true
+    resave: false,
+    saveUninitialized: false,
+    secret: config.get('SECRET'),
+    signed: true
 };
 
 // In production use the App Engine Memcache instance to store session data,
 // otherwise fallback to the default MemoryStore in development.
-if (config.get('NODE_ENV') === 'production' && config.get('MEMCACHE_URL')) {
-  sessionConfig.store = new MemcachedStore({
-    hosts: [config.get('MEMCACHE_URL')]
-  });
+if (config.get('NODE_ENV') === 'production' && config.get('MONGO_URL')) {
+    sessionConfig.store = new MemcachedStore({
+        hosts: [config.get('MONGO_URL')]
+    });
 }
 
 app.use(session(sessionConfig));
@@ -67,13 +67,13 @@ app.use('/api/books', require('./books/api'));
 
 // Redirect root to /books
 app.get('/', (req, res) => {
-  res.redirect('/books');
+    res.redirect('/books');
 });
 
 // Our application will need to respond to health checks when running on
 // Compute Engine with Managed Instance Groups.
 app.get('/_ah/health', (req, res) => {
-  res.status(200).send('ok');
+    res.status(200).send('ok');
 });
 
 // Add the error logger after all middleware and routes so that
@@ -83,23 +83,23 @@ app.use(logging.errorLogger);
 
 // Basic 404 handler
 app.use((req, res) => {
-  res.status(404).send('Not Found');
+    res.status(404).send('Not Found');
 });
 
 // Basic error handler
 app.use((err, req, res, next) => {
-  /* jshint unused:false */
-  // If our routes specified a specific response, then send that. Otherwise,
-  // send a generic message so as not to leak anything.
-  res.status(500).send(err.response || 'Something broke!');
+    /* jshint unused:false */
+    // If our routes specified a specific response, then send that. Otherwise,
+    // send a generic message so as not to leak anything.
+    res.status(500).send(err.response || 'Something broke!');
 });
 
 if (module === require.main) {
-  // Start the server
-  const server = app.listen(config.get('PORT'), () => {
-    const port = server.address().port;
-    console.log(`App listening on port ${port}`);
-  });
+    // Start the server
+    const server = app.listen(config.get('PORT'), () => {
+        const port = server.address().port;
+        console.log(`App listening on port ${port}`);
+    });
 }
 
 module.exports = app;
