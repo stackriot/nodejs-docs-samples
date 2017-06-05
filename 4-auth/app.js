@@ -9,8 +9,9 @@ if (process.env.NODE_ENV === 'production') {
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
-const MongoClientConnect = require('mongo-client-connect');
-const MongoClient = require('mongodb').MongoClient
+// const MongoClientConnect = require('mongo-client-connect');
+// const MongoClient = require('mongodb').MongoClient
+const MemcachedStore = require('connect-memcached')(session);
 const passport = require('passport');
 const config = require('./config');
 const logging = require('./lib/logging');
