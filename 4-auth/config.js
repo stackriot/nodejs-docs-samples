@@ -19,10 +19,10 @@ const nconf = module.exports = require('nconf');
 const path = require('path');
 
 nconf
-  // 1. Command-line arguments
-  .argv()
-  // 2. Environment variables
-  .env([
+	// 1. Command-line arguments
+	.argv()
+	// 2. Environment variables
+	.env([
     'CLOUD_BUCKET',
     'DATA_BACKEND',
     'GCLOUD_PROJECT',
@@ -36,44 +36,50 @@ nconf
     'OAUTH2_CLIENT_SECRET',
     'OAUTH2_CALLBACK',
     'PORT',
-    'SECRET'
+    'SECRET',
+    'SUBSCRIPTION_NAME',
+    'TOPIC_NAME'
   ])
-  // 3. Config file
-  .file({ file: path.join(__dirname, 'config.json') })
-  // 4. Defaults
-  .defaults({
-    // Typically you will create a bucket with the same name as your project ID.
-    CLOUD_BUCKET: '',
+	// 3. Config file
+	.file({
+		file: path.join(__dirname, 'config.json')
+	})
+	// 4. Defaults
+	.defaults({
+		// Typically you will create a bucket with the same name as your project ID.
+		CLOUD_BUCKET: 'books-470ee.appspot.com',
 
-    // dataBackend can be 'datastore', 'cloudsql', or 'mongodb'. Be sure to
-    // configure the appropriate settings for each storage engine below.
-    // If you are unsure, use datastore as it requires no additional
-    // configuration.
-    DATA_BACKEND: 'datastore',
+		// dataBackend can be 'datastore', 'cloudsql', or 'mongodb'. Be sure to
+		// configure the appropriate settings for each storage engine below.
+		// If you are unsure, use datastore as it requires no additional
+		// configuration.
+		DATA_BACKEND: 'mongodb',
 
-    // This is the id of your project in the Google Cloud Developers Console.
-    GCLOUD_PROJECT: '',
+		// This is the id of your project in the Google Cloud Developers Console.
+		GCLOUD_PROJECT: 'node-mongodb',
 
-    // Connection url for the Memcache instance used to store session data
-    MEMCACHE_URL: 'localhost:11211',
+		// Connection url for the Memcache instance used to store session data
+		MEMCACHE_URL: 'localhost:11211',
 
-    // MongoDB connection string
-    // https://docs.mongodb.org/manual/reference/connection-string/
-    MONGO_URL: 'mongodb://localhost:27017',
-    MONGO_COLLECTION: 'books',
+		// MongoDB connection string
+		// https://docs.mongodb.org/manual/reference/connection-string/
+		MONGO_URL: 'mongodb://dori:app123321@ds163301.mlab.com:63301/gcloud-node-mongo',
+		MONGO_COLLECTION: 'books',
+		MYSQL_USER: '',
+		MYSQL_PASSWORD: '',
 
-    MYSQL_USER: '',
-    MYSQL_PASSWORD: '',
+		OAUTH2_CLIENT_ID: '672255327820-8h0l5bs7aerib4rr90rf6jaf8h0c63ni.apps.googleusercontent.com',
+		OAUTH2_CLIENT_SECRET: 'EbJ5RvyAyAO4Cbm6x6OJSAHB',
+		OAUTH2_CALLBACK: 'https://books.npmstack.com/auth/google/callback',
 
-    OAUTH2_CLIENT_ID: '',
-    OAUTH2_CLIENT_SECRET: '',
-    OAUTH2_CALLBACK: 'http://localhost:8080/auth/google/callback',
+		PORT: 8080,
 
-    PORT: 8080,
+		// Set this a secret string of your choosing
+		SECRET: 'keyboardcat',
 
-    // Set this a secret string of your choosing
-    SECRET: 'keyboardcat'
-  });
+		SUBSCRIPTION_NAME: 'projects/node-mongodb/subscriptions/gcr-analysis-0d1c54a28877aaf6658391cfa8c33746',
+		TOPIC_NAME: 'projects/node-mongodb/topics/us.gcr.io%2Fnode-mongodb'
+	});
 
 // Check for required settings
 checkConfig('GCLOUD_PROJECT');
@@ -82,18 +88,18 @@ checkConfig('OAUTH2_CLIENT_ID');
 checkConfig('OAUTH2_CLIENT_SECRET');
 
 if (nconf.get('DATA_BACKEND') === 'cloudsql') {
-  checkConfig('MYSQL_USER');
-  checkConfig('MYSQL_PASSWORD');
-  if (nconf.get('NODE_ENV') === 'production') {
-    checkConfig('INSTANCE_CONNECTION_NAME');
-  }
+	checkConfig('MYSQL_USER');
+	checkConfig('MYSQL_PASSWORD');
+	if (nconf.get('NODE_ENV') === 'production') {
+		checkConfig('INSTANCE_CONNECTION_NAME');
+	}
 } else if (nconf.get('DATA_BACKEND') === 'mongodb') {
-  checkConfig('MONGO_URL');
-  checkConfig('MONGO_COLLECTION');
+	checkConfig('MONGO_URL');
+	checkConfig('MONGO_COLLECTION');
 }
 
-function checkConfig (setting) {
-  if (!nconf.get(setting)) {
-    throw new Error(`You must set ${setting} as an environment variable or in config.json!`);
-  }
+function checkConfig(setting) {
+	if (!nconf.get(setting)) {
+		throw new Error(`You must set ${setting} as an environment variable or in config.json!`);
+	}
 }
