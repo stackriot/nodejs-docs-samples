@@ -68,9 +68,9 @@ nconf
 		MYSQL_USER: '',
 		MYSQL_PASSWORD: '',
 
-		OAUTH2_CLIENT_ID: '672255327820-8h0l5bs7aerib4rr90rf6jaf8h0c63ni.apps.googleusercontent.com',
-		OAUTH2_CLIENT_SECRET: 'EbJ5RvyAyAO4Cbm6x6OJSAHB',
-		OAUTH2_CALLBACK: 'https://books.npmstack.com/auth/google/callback',
+		OAUTH2_CLIENT_ID: '476481807572-dcaqb6tsg0fo10a6526i0hgfdmdlfa2t.apps.googleusercontent.com',
+		OAUTH2_CLIENT_SECRET: '5KKZ7olxzrZb8KidX9-w1aJh',
+		OAUTH2_CALLBACK: 'https://node-mongodb.appspot.com/auth/google/callback',
 
 		PORT: 8080,
 

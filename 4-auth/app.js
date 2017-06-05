@@ -17,21 +17,6 @@ const logging = require('./lib/logging');
 
 const app = express();
 
-app.use = (nconf.get() => {
-	file: 'config.json'
-});
-
-// Connect to a MongoDB server provisioned over at
-// MongoLab.  See the README for more info.
-
-const user = nconf.get('mongoUser');
-const pass = nconf.get('mongoPass');
-const host = nconf.get('mongoHost');
-const port = nconf.get('mongoPort');
-
-// [START client]
-let uri = MONGO_URL;
-
 app.disable('etag');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
